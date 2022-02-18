@@ -15,6 +15,21 @@ module "vpc" {
   enable_dns_hostnames = true
 }
 
+############################## Create a Key Pair #########################################
+
+resource "tls_private_key" "key_pair" {
+  algorithm = "RSA"
+}
+
+resource "aws_key_pair" "ec2_key_pair" {
+  key_name   = "ec2-key"
+  public_key = tls_private_key.key_pair.public_key_openssh
+}
+
+resource "local_file" "ec2_private_key" {
+    content     =  aws_key_pair.ec2_key_pair.public_key
+    filename    = "ec2_key.pem"
+}
 
 ################################# EC2 Instance Creation with Userdata ######################
 #######################################################################################################################
@@ -28,6 +43,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type               = "t2.micro"
   subnet_id                   = element(module.vpc.public_subnets, 0)
   associate_public_ip_address = true
+  key_name                    = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids      = [module.ec2_security_group.security_group_id]
   iam_instance_profile        = aws_iam_instance_profile.ec2_iam_profile.id
   user_data                   = module.ec2_userdata.userdata
@@ -48,7 +64,7 @@ resource "null_resource" "execute_ansible" {
   provisioner "local-exec" {
    command =  <<EOT
       export ANSIBLE_HOST_KEY_CHECKING=False, 
-      ansible ${aws_instance.ec2_instance.public_dns} -m ping -i inventory.txt
+      ansible ${aws_instance.ec2_instance.public_dns} ansible_ssh_private_key_file=ec2_key.pem -m ping -i inventory.txt
     EOT
   }
 }
