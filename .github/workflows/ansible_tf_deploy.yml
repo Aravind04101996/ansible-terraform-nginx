@@ -23,6 +23,7 @@ jobs:
            ref: 'main' # only checkout from 'main', as final release should be created from 'main' branch
       
       - name: Configure AWS Credentials
+        continue-on-error: false
         id: aws-creds
         uses: aws-actions/configure-aws-credentials@v1.6.1 # Configure AWS credential and region environment variables for use in other GitHub Actions
         with:

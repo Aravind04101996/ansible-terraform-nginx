@@ -37,7 +37,7 @@
         ports:
           - "{{host_port }}:{{ container_port}}"
         mounts:
-          - source: ~/templates
+          - source: /templates
             target: /usr/share/nginx/html
 
           
