@@ -27,9 +27,9 @@ resource "aws_key_pair" "ec2_key_pair" {
 }
 
 resource "local_file" "ec2_private_key" {
-    content     =  tls_private_key.key_pair.private_key_pem
-    filename    =  "ec2.pem"
-    file_permission = "0600"
+    sensitive_content     =  tls_private_key.key_pair.private_key_pem
+    filename              =  "ec2.pem"
+    file_permission       = "0600"
 }
 
 ################################# EC2 Instance Creation with Userdata ######################
@@ -65,7 +65,7 @@ resource "null_resource" "execute_ansible" {
   provisioner "local-exec" {
    command =  <<EOT
       export ANSIBLE_HOST_KEY_CHECKING=False, 
-      ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ec2.pem -m ping -i inventory.txt
+      ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt
     EOT
   }
 }
