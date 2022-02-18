@@ -16,7 +16,9 @@
       command: docker version
 
     - name: create a directory to store Web Server Static Page Templates
-      command: mkdir templates
+      file:
+        name: templates
+        state: directory
 
     - name: Copy Web Server Static Page Template from Ansible Control Host to Target Host
       template:
