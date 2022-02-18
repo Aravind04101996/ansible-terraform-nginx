@@ -65,23 +65,16 @@ resource "local_file" "ec2-dns" {
     filename    = "inventory.txt"
 }
 
-resource "null_resource" "wait_for_ec2_userdata_execution" {
-  depends_on = [aws_instance.ec2_instance]
 
-  provisioner "local-exec" {
-      command =  <<EOT
-        echo "Go and sleep for 180 seconds !",
-        sleep 180,
-        echo "It's time to wake up !"
-      EOT
-  }
-}
 resource "null_resource" "execute_ansible_target" {
  
-  depends_on = [aws_instance.ec2_instance, null_resource.wait_for_ec2_userdata_execution, aws_cloudwatch_log_group.ec2_cwlogs]
+  depends_on = [aws_instance.ec2_instance, aws_cloudwatch_log_group.ec2_cwlogs]
 
   provisioner "local-exec" {
    command =  <<EOT
+      echo "Go and sleep for 180 seconds !",
+      sleep 180,
+      echo "It's time to wake up !",
       export ANSIBLE_HOST_KEY_CHECKING=False, 
       ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt,
       ansible-playbook ../ansible-nginx-playbook/webserver_playbook.yml -u ec2-user --private-key ${local_file.ec2_private_key.filename} -i inventory.txt 
