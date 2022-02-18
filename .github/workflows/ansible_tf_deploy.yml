@@ -4,9 +4,40 @@ on: # Specifies the trigger for this workflow
     branches:    
       - 'main'
 jobs:
-  check_ansible: # Name of job
+  deploy: # Name of job
     runs-on: ubuntu-latest # Configures the job to run on the latest version of an Ubuntu Linux runner. This means that the job will execute on a fresh virtual machine hosted by GitHub
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Check Ansible is installed
+        continue-on-error: false
         run: |
           ansible --version
+      
+      - name: Checkout Repo
+        continue-on-error: false
+        uses: actions/checkout@v2 # action checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access it.
+        with:
+           ref: 'main' # only checkout from 'main', as final release should be created from 'main' branch
+      
+      - name: Configure AWS Credentials
+        id: aws-creds
+        uses: aws-actions/configure-aws-credentials@v1.6.1 # Configure AWS credential and region environment variables for use in other GitHub Actions
+        with:
+            aws-region: us-east-2
+            role-to-assume: ${{ secrets.IAM_ROLE_TO_ASSUME }}
+            role-session-name: deploy-terraform
+          
+      - name: Terraform Deployment
+        continue-on-error: false
+        run: |
+          cd ec2-infra-terraform
+          echo "Terraform Init"
+          terraform init
+          echo "Terraform Plan"
+          terraform plan
+          echo "Terraform Apply"
+          terraform apply --auto-approve
+
