@@ -9,7 +9,8 @@
     container_name: nginx
 
   tasks:
-    - name: Verify Docker is installed
+  
+    - name: Verify Docker is installed on target host
       command: docker version
 
     - name: Deploy a docker container and configure web server
