@@ -21,7 +21,7 @@
     - name: Copy Web Server Static Page Template from Ansible Control Host to Target Host
       template:
         src: templates/index.html.j2
-        dest: /templates/index.html
+        dest: ~/templates/index.html
 
     - name: Deploy a docker container and configure web server on target host
       docker_container:
@@ -35,7 +35,7 @@
         ports:
           - "{{host_port }}:{{ container_port}}"
         mounts:
-          source: /templates
+          source: ~/templates
           target: /usr/share/nginx/html
 
           
