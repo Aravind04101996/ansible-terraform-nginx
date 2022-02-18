@@ -4,6 +4,11 @@
   vars:
     image: nginx
     container_name: nginx
+    log_driver: awslogs
+    aws_region: us-east-2
+    aws_log_group: ec2-nginx-cwlogs
+    host_port: 80
+    container_port: 80
 
   tasks:
   
@@ -13,7 +18,11 @@
     - name: Deploy a docker container and configure web server on target host
       docker_container:
         image: "{{ image }}"
+        log_driver: "{{ log_driver }}"
+        log_options: 
+          awslogs-region: "{{ aws_region }}"
+          awslogs-group: "{{ aws_log_group }}"
         name: "{{ container_name }}"
         state: started
         ports:
-          - 80:80
+          - "{{host_port }}:{{ container_port}}"

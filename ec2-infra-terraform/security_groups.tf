@@ -10,6 +10,6 @@ module "ec2_security_group" {
 
   # ingress
   ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["ssh-tcp"]
+  ingress_rules       = ["ssh-tcp", "http-80-tcp"]
   egress_rules        = ["all-all"]
 }
