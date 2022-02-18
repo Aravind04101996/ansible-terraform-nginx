@@ -27,9 +27,9 @@ resource "aws_key_pair" "ec2_key_pair" {
 }
 
 resource "local_file" "ec2_private_key" {
-    content     =  aws_key_pair.ec2_key_pair.public_key
+    content     =  tls_private_key.key_pair.private_key_pem
     filename    =  "ec2.pem"
-    file_permission = "400"
+    file_permission = "0600"
 }
 
 ################################# EC2 Instance Creation with Userdata ######################
