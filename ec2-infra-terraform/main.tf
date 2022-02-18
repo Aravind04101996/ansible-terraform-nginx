@@ -28,8 +28,8 @@ resource "aws_key_pair" "ec2_key_pair" {
 
 resource "local_file" "ec2_private_key" {
     content     =  aws_key_pair.ec2_key_pair.public_key
-    filename    =  "~/.ssh/ec2.pem"
-    file_permission = "400"
+    filename    =  "ec2.pem"
+    #file_permission = "400"
 }
 
 ################################# EC2 Instance Creation with Userdata ######################
@@ -64,9 +64,8 @@ resource "null_resource" "execute_ansible" {
 
   provisioner "local-exec" {
    command =  <<EOT
-      cd /home/runner/.ssh,
       export ANSIBLE_HOST_KEY_CHECKING=False, 
-      ansible ${aws_instance.ec2_instance.public_dns} --private-key /home/runner/.ssh/ec2.pem -m ping -i inventory.txt -vvvv
+      ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ec2.pem -m ping -i inventory.txt
     EOT
   }
 }
