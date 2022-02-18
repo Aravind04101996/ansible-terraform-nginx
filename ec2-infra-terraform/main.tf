@@ -46,6 +46,6 @@ resource "null_resource" "execute_ansible" {
   depends_on = [aws_instance.ec2_instance]
 
   provisioner "local-exec" {
-   command = "ansible -m ping -i inventory.txt"
+   command = "ansible ${aws_instance.ec2_instance.public_dns} -m ping -i inventory.txt"
   }
 }
