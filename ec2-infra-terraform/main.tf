@@ -72,8 +72,8 @@ resource "null_resource" "execute_ansible_target" {
 
   provisioner "local-exec" {
    command =  <<EOT
-      echo "Go and sleep for 180 seconds !",
-      sleep 180,
+      echo "Go and sleep for 180 seconds - Wait for completion of EC2 userdata!",
+      sleep 180s,
       echo "It's time to wake up !",
       export ANSIBLE_HOST_KEY_CHECKING=False, 
       ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt,

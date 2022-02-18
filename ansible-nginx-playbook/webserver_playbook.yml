@@ -15,10 +15,13 @@
     - name: Verify Docker is installed on target hosts
       command: docker version
 
+    - name: create a directory to store Web Server Static Page Templates
+      command: mkdir templates
+
     - name: Copy Web Server Static Page Template from Ansible Control Host to Target Host
       template:
         src: templates/index.html.j2
-        dest: /var/index.html
+        dest: /templates/index.html
 
     - name: Deploy a docker container and configure web server on target host
       docker_container:
@@ -31,8 +34,8 @@
         state: started
         ports:
           - "{{host_port }}:{{ container_port}}"
-        volumes:
-          /var: /usr/share/nginx/html
-    
+        mounts:
+          source: /templates
+          target: /usr/share/nginx/html
 
           
