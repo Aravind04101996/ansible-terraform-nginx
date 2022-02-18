@@ -64,7 +64,7 @@ resource "null_resource" "execute_ansible" {
 
   provisioner "local-exec" {
    command =  <<EOT
-      cd /home/runner/.ssh
+      cd /home/runner/.ssh,
       export ANSIBLE_HOST_KEY_CHECKING=False, 
       ansible ${aws_instance.ec2_instance.public_dns} --private-key /home/runner/.ssh/ec2.pem -m ping -i inventory.txt -vvvv
     EOT
