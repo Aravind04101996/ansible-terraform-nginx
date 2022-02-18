@@ -10,10 +10,10 @@
 
   tasks:
   
-    - name: Verify Docker is installed on target host
+    - name: Verify Docker is installed on target hosts
       command: docker version
 
-    - name: Deploy a docker container and configure web server
+    - name: Deploy a docker container and configure web server on target host
       docker_container:
         image: "{{ image }}"
         log_driver: "{{ log_driver }}"
