@@ -53,6 +53,13 @@ resource "aws_instance" "ec2_instance" {
   }
 }
 
+##### Create a Cloud Watch Log Group ########
+
+resource "aws_cloudwatch_log_group" "ec2_cwlogs" {
+  name              = "ec2-nginx-cwlogs"
+  retention_in_days = 7
+}
+
 resource "local_file" "ec2-dns" {
     content     =  aws_instance.ec2_instance.public_dns 
     filename    = "inventory.txt"
@@ -60,12 +67,13 @@ resource "local_file" "ec2-dns" {
 
 resource "null_resource" "execute_ansible_target" {
  
-  depends_on = [aws_instance.ec2_instance]
+  depends_on = [aws_instance.ec2_instance, aws_cloudwatch_log_group.ec2_cwlogs]
 
   provisioner "local-exec" {
    command =  <<EOT
       export ANSIBLE_HOST_KEY_CHECKING=False, 
-      ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt
+      ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt,
+      ansible-playbook webserver_playbook.yml -u ec2-user --private-key ${local_file.ec2_private_key.filename} -i inventory.txt 
     EOT
   }
 }

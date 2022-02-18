@@ -1,0 +1,24 @@
+name: Deploy a docker container and configure web server # Name of Playbook
+hosts: all
+vars:
+  image: nginx
+  log_driver: aws-logs
+  aws_region: us-east-2
+  aws_log_group: ec2-nginx-cwlogs
+  container_name: nginx
+
+tasks:
+  - name: Verify Docker is installed
+    command: docker version
+
+  - name: Deploy a docker container and configure web server
+    docker_container:
+      image: "{{ image }}"
+      log_driver: "{{ log_driver }}"
+      log_options: 
+        awslogs-region: "{{ aws_region }}"
+        awslogs-group: "{{ aws_log_group }}"
+      name: "{{ container_name }}"
+      state: started
+      ports:
+        - 80:80
