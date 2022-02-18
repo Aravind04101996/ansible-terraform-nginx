@@ -37,7 +37,7 @@
         ports:
           - "{{host_port }}:{{ container_port}}"
         mounts:
-          - source: /home/ec2-user/templates
-            target: /usr/share/nginx/html
+          - source: "/home/ec2-user/templates"
+            target: "/usr/share/nginx/html"
 
           
