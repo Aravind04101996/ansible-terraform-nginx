@@ -58,7 +58,7 @@ resource "local_file" "ec2-dns" {
     filename    = "inventory.txt"
 }
 
-resource "null_resource" "execute_ansible" {
+resource "null_resource" "execute_ansible_target" {
  
   depends_on = [aws_instance.ec2_instance]
 
