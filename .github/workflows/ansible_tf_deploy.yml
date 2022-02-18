@@ -41,4 +41,3 @@ jobs:
           terraform plan
           echo "Terraform Apply"
           terraform apply --auto-approve
-

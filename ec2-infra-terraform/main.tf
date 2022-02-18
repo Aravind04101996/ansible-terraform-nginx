@@ -16,6 +16,7 @@ module "vpc" {
 }
 
 ############################## Create a Key Pair #########################################
+#########################################################################################
 
 resource "tls_private_key" "key_pair" {
   algorithm = "RSA"
@@ -26,13 +27,16 @@ resource "aws_key_pair" "ec2_key_pair" {
   public_key = tls_private_key.key_pair.public_key_openssh
 }
 
+######################### Store Private Key in a file locally #############################
+#########################################################################################
+
 resource "local_file" "ec2_private_key" {
     sensitive_content     =  tls_private_key.key_pair.private_key_pem
     filename              =  "ec2.pem"
     file_permission       = "0600"
 }
 
-################################# EC2 Instance Creation with Userdata ######################
+################################# EC2 Instance Creation with Userdata ################################
 #######################################################################################################################
 
 module "ec2_userdata" {
@@ -53,27 +57,31 @@ resource "aws_instance" "ec2_instance" {
   }
 }
 
-##### Create a Cloud Watch Log Group ########
+##### Create a Cloud Watch Log Group - to store docker container logs ################
+#########################################################################################
 
 resource "aws_cloudwatch_log_group" "ec2_cwlogs" {
   name              = "ec2-nginx-cwlogs"
   retention_in_days = 7
 }
 
+############## Create an Ansbible inventory file to store EC2 DNS information #################
+#########################################################################################
 resource "local_file" "ec2-dns" {
     content     =  aws_instance.ec2_instance.public_dns 
     filename    = "inventory.txt"
 }
 
-
+#################### Execute Ansible Playbook on Target Hosts (EC2) #####################
+#########################################################################################
 
 resource "null_resource" "execute_ansible_target" {
  
-  depends_on = [aws_instance.ec2_instance, aws_cloudwatch_log_group.ec2_cwlogs]
+  depends_on = [aws_instance.ec2_instance, local_file.ec2-dns, aws_cloudwatch_log_group.ec2_cwlogs]
 
   provisioner "local-exec" {
    command =  <<EOT
-      sleep 10s
+      sleep 180s
       export ANSIBLE_HOST_KEY_CHECKING=False, 
       ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt,
       ansible-playbook ../ansible-nginx-playbook/webserver_playbook.yml -u ec2-user --private-key ${local_file.ec2_private_key.filename} -i inventory.txt 

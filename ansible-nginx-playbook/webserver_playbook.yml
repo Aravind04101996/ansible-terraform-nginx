@@ -1,7 +1,7 @@
 -
   name: Deploy a docker container and configure web server # Name of Playbook
-  hosts: all
-  vars:
+  hosts: all # Execute this playbook in all hosts defined in inventory file
+  vars: # variables
     image: nginx
     container_name: nginx
     log_driver: awslogs
@@ -12,20 +12,20 @@
 
   tasks:
   
-    - name: Verify Docker is installed on target hosts
+    - name: Verify Docker is installed on target hosts  # task 1
       command: docker version
 
-    - name: create a directory to store Web Server Static Page Templates
+    - name: create a directory to store Web Server Static Page Templates # task 2
       file:
         name: templates
         state: directory
 
-    - name: Copy Web Server Static Page Template from Ansible Control Host to Target Host
+    - name: Copy Web Server Static Page Template from Ansible Control Host to Target Host # task 3
       template:
         src: templates/index.html.j2
         dest: ~/templates/index.html
 
-    - name: Deploy a docker container and configure web server on target host
+    - name: Deploy a docker container and configure web server on target host # task 4
       docker_container:
         image: "{{ image }}"
         log_driver: "{{ log_driver }}"
@@ -38,5 +38,3 @@
           - "{{host_port }}:{{ container_port}}"
         volumes:
         - /home/ec2-user/templates:/usr/share/nginx/html
-
-          
