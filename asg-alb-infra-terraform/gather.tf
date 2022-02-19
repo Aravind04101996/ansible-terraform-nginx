@@ -11,3 +11,7 @@ data "aws_ami" "ami" {
     ]
   }
 }
+
+data "aws_s3_bucket" "playbook_bucket" {
+  bucket = "nginx-tf-ansible-playbook"
+}
