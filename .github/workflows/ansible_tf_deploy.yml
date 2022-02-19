@@ -1,8 +1,7 @@
 name: Deploy Terraform to create Infrastructure and Configure system using Ansible # The name of the workflow
 on: # Specifies the trigger for this workflow
-  push:
-    branches:    
-      - 'main'
+  release:
+    types: [published] # only if a release is published
 jobs:
   deploy: # Name of job
     runs-on: ubuntu-latest # Configures the job to run on the latest version of an Ubuntu Linux runner. This means that the job will execute on a fresh virtual machine hosted by GitHub

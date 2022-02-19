@@ -44,7 +44,7 @@ module "nginx_asg" {
   min_size                  = 1
   max_size                  = 3
   desired_capacity          = 3
-  target_group_arns         = []
+  target_group_arns         = module.nginx_alb.target_group_arns
   health_check_type         = "EC2"
   health_check_grace_period = 420
   tags = {
@@ -63,7 +63,7 @@ module "nginx_asg" {
 ################################ Create an Application Load Balancer ########################################
 ##############################################################################################################
 
-module "alb" {
+module "nginx_alb" {
   source                           = "terraform-aws-modules/alb/aws"
   version                          = "6.7.0"
   enable_cross_zone_load_balancing = true

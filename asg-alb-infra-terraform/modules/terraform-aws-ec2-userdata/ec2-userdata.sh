@@ -22,8 +22,9 @@ sudo service docker start
 sudo usermod -a -G docker ec2-user
 
 echo "Installing Python Modules - Requests and Docker Modules"
-sudo pip3 install requests
-sudo pip3 install docker
+sudo yum install pip
+sudo pip install requests
+sudo pip install docker
 
 echo "Downloading Ansible Playbook from S3"
 aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
