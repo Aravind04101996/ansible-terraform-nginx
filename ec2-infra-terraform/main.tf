@@ -84,7 +84,7 @@ resource "null_resource" "execute_ansible_target" {
       sleep 180s
       export ANSIBLE_HOST_KEY_CHECKING=False, 
       ansible ${aws_instance.ec2_instance.public_dns} -u ec2-user --private-key ${local_file.ec2_private_key.filename} -m ping -i inventory.txt,
-      ansible-playbook ../ansible-nginx-playbook/webserver_playbook.yml -u ec2-user --private-key ${local_file.ec2_private_key.filename} -i inventory.txt 
+      ansible-playbook ../ansible-nginx-playbook/webserver_playbook.yml --extra-vars webserver_playbook_variables.yml -u ec2-user --private-key ${local_file.ec2_private_key.filename} -i inventory.txt 
     EOT
   }
 }

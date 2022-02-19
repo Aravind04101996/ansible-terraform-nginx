@@ -1,0 +1,9 @@
+image: nginx
+container_name: nginx-container
+log_driver: awslogs
+aws_region: us-east-2
+aws_log_group: ec2-nginx-cwlogs
+host_port: 80
+container_port: 80
+container_path: /usr/share/nginx/html
+tag: latest

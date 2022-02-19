@@ -1,5 +1,18 @@
 -
   name: Deploy a docker container and configure web server # Name of Playbook
-  hosts: all # Execute this playbook in all hosts defined in inventory file
+  hosts: {{ hosts }} # Execute this playbook in hosts defined in inventory file
   roles:
-    - webserver-docker-role
+    - role: webserver-docker-role
+      vars:
+        image: {{ image }}
+        container_name: {{ container_name }}
+        log_driver: awslogs
+        aws_region: {{ aws_region }}
+        aws_log_group: {{ aws_log_group }}
+        host_port: {{ host_port }}
+        container_port: {{ container_port }}
+        dir_name: {{ dir_name }}
+        destn_templates_dir: {{ destn_templates_dir }}
+        host_path: {{ host_path }}
+        container_path: {{ container_path }}
+        tag: {{ tag }}
