@@ -40,7 +40,7 @@ module "nginx_asg" {
   version                   = "5.1.1"
   name                      = "Nginx-EC2-ASG"
   instance_name             = "Nginx-EC2"
-  vpc_zone_identifier       = [module.vpc.private_subnets]
+  vpc_zone_identifier       = module.vpc.private_subnets
   min_size                  = 1
   max_size                  = 3
   desired_capacity          = 3
