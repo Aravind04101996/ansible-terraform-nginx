@@ -1,0 +1,25 @@
+# Set of Tasks to configure webserver in docker container
+
+- name: create a directory to store Web Server Static Page Templates
+  file:
+    name: "{{ dir_name }}"
+    state: directory
+
+- name: Render Web Server Home Page
+  template:
+    src: templates/index.html.j2
+    dest: "{{ destn_templates_dir }}"
+
+- name: Deploy a docker container and configure web server.
+  docker_container:
+    image: "{{ image }}:{{ tag }}"
+    log_driver: "{{ log_driver }}"
+    log_options: 
+      awslogs-region: "{{ aws_region }}"
+      awslogs-group: "{{ aws_log_group }}"
+    name: "{{ container_name }}"
+    state: started
+    ports:
+    - "{{host_port }}:{{ container_port }}"
+    volumes:
+    - "{{host_path }}:{{ container_path }}"

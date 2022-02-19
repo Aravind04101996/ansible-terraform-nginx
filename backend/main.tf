@@ -1,5 +1,5 @@
-######################################## S3 bucket for terraform state #########################################
-###############################################################################################################
+######################################## S3 bucket for terraform state ###################################################
+##########################################################################################################################
 
 resource "aws_s3_bucket" "backend" {
   bucket        = "nginx-ansible-terraform"
@@ -18,7 +18,7 @@ resource "aws_s3_bucket" "backend" {
   }
 
   tags = {
-    Name = "x-ops-tf-states"
+    Name = "nginx-ansible-terraform"
   }
 }
 
@@ -36,6 +36,6 @@ resource "aws_dynamodb_table" "state_lock" {
   }
 
   tags = {
-    Name = "x-ops-tf-states"
+    Name = "nginx-ansible-terraform"
   }
 }

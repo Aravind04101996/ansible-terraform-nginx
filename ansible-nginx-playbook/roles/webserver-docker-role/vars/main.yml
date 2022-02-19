@@ -1,0 +1,12 @@
+image: nginx
+container_name: nginx
+log_driver: awslogs
+aws_region: us-east-2
+aws_log_group: ec2-nginx-cwlogs
+host_port: 80
+container_port: 80
+dir_name: templates
+destn_templates_dir: ~/templates/index.html
+host_path: /home/ec2-user/templates
+container_path: /usr/share/nginx/html
+tag: latest

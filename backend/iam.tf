@@ -1,6 +1,8 @@
 data "aws_caller_identity" "current" {}
 
-# IAM Identity provider creation - for Github Actions
+############################## IAM Identity provider creation - for Github Actions ##########################
+#############################################################################################################
+
 resource "aws_iam_openid_connect_provider" "github-oidc" {
   url = "https://token.actions.githubusercontent.com"
 
@@ -11,7 +13,9 @@ resource "aws_iam_openid_connect_provider" "github-oidc" {
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
 
-# OIDC Assume Role Policy
+#################################### OIDC Assume Role Policy ################################################
+#############################################################################################################
+
 data "aws_iam_policy_document" "oidc-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -28,7 +32,9 @@ data "aws_iam_policy_document" "oidc-assume-role-policy" {
   }
 }
 
-# Creation of IAM Role : github ci cd will assume this role using OIDC
+############################### Creation of IAM Role : github ci cd will assume this role using OIDC ########
+#############################################################################################################
+
 resource "aws_iam_role" "github-oidc-assume-role" {
   name               = "github-oidc-assume-iam-role"
   assume_role_policy = data.aws_iam_policy_document.oidc-assume-role-policy.json

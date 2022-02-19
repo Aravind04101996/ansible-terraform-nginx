@@ -1,0 +1,11 @@
+# the main list of tasks that the role executes.
+
+# Task #1 - Verify Docker Installation
+
+- name: Verify Docker is installed on target hosts 
+  command: docker version
+
+# Task #2 - Configure Web Server 
+
+- name: Configure Web Server
+  import_tasks: web_server.yml
