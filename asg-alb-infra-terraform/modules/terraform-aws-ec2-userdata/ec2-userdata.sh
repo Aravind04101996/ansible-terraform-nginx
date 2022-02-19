@@ -27,7 +27,7 @@ sudo pip3 install docker
 
 echo "Downloading Ansible Playbook from S3"
 aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
-sudo chmod 644 tmp/playbook.zip
+sudo chmod 644 /tmp/playbook.zip
 sudo yum install -y unzip
-sudo unzip -o tmp/playbook.zip
-ansible-playbook ./playbook/webserver_playbook.yml --extra-vars $${VARS_FILE} -u ec2-user
+sudo unzip -o /tmp/playbook.zip
+ansible-playbook ./playbook/webserver_playbook.yml --extra-vars $${VARS_FILE}
