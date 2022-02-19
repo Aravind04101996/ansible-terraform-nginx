@@ -25,7 +25,7 @@ echo "waiting for docker installation to complete"
 sleep 120s
 
 echo "Installing Python Modules - Requests and Docker Modules"
-sudo yum install pip
+sudo yum install pip -y
 sudo pip install requests
 sudo pip install docker
 
