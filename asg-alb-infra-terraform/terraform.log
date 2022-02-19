@@ -1,0 +1,5 @@
+2022-02-19T13:49:56.407+0530 [INFO]  Terraform version: 1.0.11
+2022-02-19T13:49:56.408+0530 [INFO]  Go runtime version: go1.16.4
+2022-02-19T13:49:56.408+0530 [INFO]  CLI args: []string{"C:\\Users\\Aravind\\terraform.exe", "fmt"}
+2022-02-19T13:49:56.429+0530 [INFO]  Loading CLI configuration from C:\Users\Aravind\AppData\Roaming\terraform.d\credentials.tfrc.json
+2022-02-19T13:49:56.438+0530 [INFO]  CLI command args: []string{"fmt"}

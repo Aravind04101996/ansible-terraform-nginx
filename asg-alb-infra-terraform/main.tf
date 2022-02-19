@@ -56,4 +56,6 @@ module "nginx_asg" {
   user_data_base64          = module.ec2_userdata.userdata
   security_groups           = [module.ec2_security_group.security_group_id]
   launch_template_name      = "Nginx-EC2"
+
+  depends_on = [aws_cloudwatch_log_group.ec2_cwlogs]
 }
