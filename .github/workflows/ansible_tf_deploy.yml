@@ -39,7 +39,7 @@ jobs:
       - name: Terraform Deployment
         continue-on-error: false
         run: |
-          cd ec2-infra-terraform
+          cd asg-alb-infra-terraform
           echo "Terraform Init"
           terraform init
           echo "Terraform Plan"
