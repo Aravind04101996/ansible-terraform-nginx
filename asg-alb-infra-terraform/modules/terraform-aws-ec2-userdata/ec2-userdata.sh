@@ -30,4 +30,4 @@ aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
 sudo chmod 644 /tmp/playbook.zip
 sudo yum install -y unzip
 sudo unzip -o /tmp/playbook.zip
-ansible-playbook ./playbook/webserver_playbook.yml --extra-vars $${VARS_FILE}
+ansible-playbook /tmp/ansible-nginx-playbook/webserver_playbook.yml --extra-vars $${VARS_FILE}
