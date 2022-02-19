@@ -39,3 +39,27 @@ resource "aws_dynamodb_table" "state_lock" {
     Name = "nginx-ansible-terraform"
   }
 }
+
+######################################## S3 bucket for Storing Playbook ###################################################
+##########################################################################################################################
+
+resource "aws_s3_bucket" "playbook" {
+  bucket        = "nginx-tf-ansible-playbook"
+  acl           = "private"
+  force_destroy = true
+
+  versioning {
+    enabled = true
+  }
+  
+  lifecycle_rule {
+    enabled = true
+    noncurrent_version_expiration {
+      days = 10
+    }
+  }
+
+  tags = {
+    Name = "nginx-tf-ansible-playbook"
+  }
+}

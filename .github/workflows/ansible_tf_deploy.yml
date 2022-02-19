@@ -30,6 +30,11 @@ jobs:
             aws-region: us-east-2
             role-to-assume: ${{ secrets.IAM_ROLE_TO_ASSUME }}
             role-session-name: deploy-terraform
+
+      - name: Copy Playbook to S3 Bucket
+        continue-on-error: false
+        run: |
+          aws s3 cp ansible-nginx-playbook.zip s3://nginx-tf-ansible-playbook/ --region us-east-2
           
       - name: Terraform Deployment
         continue-on-error: false
