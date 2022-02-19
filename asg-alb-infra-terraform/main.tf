@@ -54,7 +54,7 @@ module "nginx_asg" {
   image_id                  = data.aws_ami.ami.id
   instance_type             = "t2.micro"
   user_data_base64          = module.ec2_userdata.userdata
-  security_groups           = [module.ec2_security_group.security_group_id]
+  security_groups           = [module.asg_sg.security_group_id]
   launch_template_name      = "Nginx-EC2"
 
   depends_on = [aws_cloudwatch_log_group.ec2_cwlogs]
@@ -63,4 +63,27 @@ module "nginx_asg" {
 ################################ Create an Application Load Balancer ########################################
 ##############################################################################################################
 
-
+module "alb" {
+  source                           = "terraform-aws-modules/alb/aws"
+  version                          = "6.7.0"
+  enable_cross_zone_load_balancing = true
+  http_tcp_listeners = [
+    {
+      port     = 80
+      protocol = "HTTP"
+    }
+  ]
+  idle_timeout    = 180
+  name            = "Nginx-ALB"
+  subnets         = module.vpc.public_subnets
+  security_groups = [module.alb_http_sg.security_group_id]
+  target_groups = [
+    {
+      name             = "Nginx-TG"
+      backend_protocol = "HTTP"
+      backend_port     = 80
+      target_type      = "instance"
+    },
+  ]
+  vpc_id = module.vpc.vpc_id
+}
