@@ -21,10 +21,16 @@ sudo yum install -y docker
 sudo service docker start
 sudo usermod -a -G docker ec2-user
 
+echo "waiting for docker installation to complete"
+sleep 120s
+
 echo "Installing Python Modules - Requests and Docker Modules"
 sudo yum install pip
 sudo pip install requests
 sudo pip install docker
+
+echo "waiting for ansible installation to complete"
+sleep 120s
 
 echo "Downloading Ansible Playbook from S3"
 aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
