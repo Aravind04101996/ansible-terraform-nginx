@@ -12,8 +12,11 @@ sudo systemctl start amazon-ssm-agent
 
 echo "Installing Ansible"
 sudo yum update -y
-sudo amazon-linux-extras install ansible2 -y
+pip3 install ansible
 ansible --version
+
+echo "waiting for Ansible installation to complete"
+sleep 120s
 
 echo "Installing Docker"
 sudo yum update -y
@@ -25,12 +28,8 @@ echo "waiting for docker installation to complete"
 sleep 120s
 
 echo "Installing Python Modules - Requests and Docker Modules"
-sudo yum install pip -y
-sudo pip install requests
-sudo pip install docker
-
-echo "waiting for ansible installation to complete"
-sleep 120s
+pip3 install requests
+pip3 install docker
 
 echo "Downloading Ansible Playbook from S3"
 aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
