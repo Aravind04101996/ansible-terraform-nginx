@@ -1,6 +1,6 @@
 -
   name: Deploy a docker container and configure web server # Name of Playbook
-  hosts: "{{ hosts }}" # Execute this playbook in hosts defined in inventory file
+  hosts: all # Execute this playbook in hosts defined in inventory file
   roles:
     - role: webserver-docker-role
       vars:
