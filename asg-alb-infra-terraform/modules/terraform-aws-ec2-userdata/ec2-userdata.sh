@@ -2,7 +2,6 @@
 
 S3_BUCKET="${s3_bucket}" 
 PLAYBOOK="${playbook}" 
-VARS_FILE="${vars_file}" 
 
 echo "Installing SSM Agent to connect to EC2 using Session Manager"
 cd /tmp
@@ -36,4 +35,4 @@ aws s3 cp s3://$${S3_BUCKET}/$${PLAYBOOK} /tmp/playbook.zip
 sudo chmod 644 /tmp/playbook.zip
 sudo yum install -y unzip
 sudo unzip -o /tmp/playbook.zip
-ansible-playbook /tmp/ansible-nginx-playbook/webserver_playbook.yml --extra-vars $${VARS_FILE}
+ansible-playbook /tmp/ansible-nginx-playbook/webserver_playbook.yml

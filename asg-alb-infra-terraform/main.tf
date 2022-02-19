@@ -31,7 +31,6 @@ module "ec2_userdata" {
   source    = "./modules/terraform-aws-ec2-userdata"
   s3_bucket = data.aws_s3_bucket.playbook_bucket.id
   playbook  = "ansible-nginx-playbook.zip"
-  vars_file = "webserver_playbook_variables.yml"
 }
 
 

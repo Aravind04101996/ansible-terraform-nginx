@@ -4,7 +4,6 @@ data "template_file" "ec2-userdata" {
   vars = {
     s3_bucket = var.s3_bucket
     playbook  = var.playbook
-    vars_file = var.vars_file
   }
 }
 

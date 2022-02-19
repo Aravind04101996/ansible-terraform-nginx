@@ -7,6 +7,6 @@ host_port: 80
 container_port: 80
 dir_name: ~/templates
 destn_templates_dir: ~/templates/index.html
-host_path: /home/ec2-user/templates
+host_path: /root/templates
 container_path: /usr/share/nginx/html
 tag: latest
