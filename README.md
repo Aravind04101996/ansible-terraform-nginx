@@ -1,16 +1,7 @@
-# DevOps / SRE Task
+# Ansible + Terraform
+## Usecase
 
-### Premisses:
-- Use Terraform as IaaC.
-- Use Ansible to configure host services.
-- Use the smallest instances; it could be the free tier, don’t worry.
-- Docker logs must be delivered to Cloudwatch.
-- Deliver it to a git repository (Github for example).
-- Provide a README.md with instructions to reproduce.
-- Please, include to the README.md how did you come with the solution (Google, Book, Manual, Stackoverflow). The source of your information is welcome.
-
-### What to deliver:
-**Using Terraform:**
+**Using Terraform**
 ```
 - VPC 10.161.0.0/24.
 - 3 Subnets: 1 per availability zone.
@@ -18,9 +9,26 @@
 - ALB serving port 80 on each instance.
 ```
 
-**Using Ansible:**
+**Using Ansible**
 ```
-- Deploy and configure an Nginx Docker container on each EC2 instance.
+- Deploy and configure a Nginx Docker container on each EC2 instance.
 - Each nginx instance must have a different index.html (e.g. Hello, server1; Hello, server2; Hello, server3). Use Jinja2.
+- Docker logs must be delivered to Cloudwatch
 ```
-For further clarifications, please contact the recruitment contact.
+**CI**
+```
+- Use github actions to deploy infra in AWS using IAC 
+```
+------------------------------------------------------------------------------------
+
+## Repository Information
+
+```
+- .github/workflows/* - github CI workflow to deploy infra in AWS. <br/>
+
+- ansible-nginx-playbook/* - Ansible playbook and role to configure a Nginx Docker container on EC2 instance. <br/>
+
+- asg-alb-infra-teraform/* - Network components (vpc, subnet, nat etc .), Auto Scaling Group with Userdata, Application Load Balancer (ALB), Security Groups, IAM Roles and Policies.
+
+- backend/* - S3 bucket for state file storage, Dynamo DB for state locking, OIDC IAM Identity provider, IAM Role for github ci. <br/>
+```
