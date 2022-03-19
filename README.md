@@ -28,7 +28,7 @@
 
 - ansible-nginx-playbook/* - Ansible playbook and role to configure a Nginx Docker container on EC2 instance. <br/>
 
-- asg-alb-infra-teraform/* - Network components (vpc, subnet, nat etc .), Auto Scaling Group with Userdata, Application Load Balancer (ALB), Security Groups, IAM Roles and Policies.
+- asg-alb-infra-teraform/* - Creation of Network components (vpc, subnet, nat etc .), Auto Scaling Group with Userdata, Application Load Balancer (ALB), Security Groups, IAM Roles and Policies through Terraform.
 
-- backend/* - S3 bucket for state file storage, Dynamo DB for state locking, OIDC IAM Identity provider, IAM Role for github ci. <br/>
+- backend/* - Creation of S3 bucket for state file storage, Dynamo DB for state locking, OIDC IAM Identity provider, IAM Role for github ci through Terraform. <br/>
 ```
